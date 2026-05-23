@@ -12,9 +12,11 @@ import {
 import { localAddresses } from "./network.mjs";
 import { serveStatic } from "./static-files.mjs";
 import { createSseHub } from "./sse-hub.mjs";
+import { createWebSocketHub } from "./websocket-hub.mjs";
 
 const store = createCommentStore(config.paths.dbPath);
 const events = createSseHub();
+const hostSockets = createWebSocketHub();
 
 function publicOrigin(req) {
   return (config.publicUrl || requestOrigin(req, config.port)).replace(
@@ -33,16 +35,23 @@ function commentsPayload(limit) {
 async function handleApiRequest(req, res, url) {
   if (req.method === "GET" && url.pathname === "/api/info") {
     const origin = publicOrigin(req);
+    const wsOrigin = origin.replace(/^http/, "ws");
     sendJson(res, 200, {
       publicUrl: origin,
       hostUrl: `${origin}/host`,
       clientUrl: `${origin}/client`,
+      webSocketUrl: `${wsOrigin}/ws/host`,
       screenUrl: `${origin}/screen`,
       commentUrl: `${origin}/comment`,
       colors: COLORS,
       dbPath: config.paths.dbPath,
       localAddresses: localAddresses(config.port),
     });
+    return true;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/health") {
+    sendJson(res, 200, { ok: true });
     return true;
   }
 
@@ -56,7 +65,9 @@ async function handleApiRequest(req, res, url) {
     const payload = await readJsonBody(req);
     const comment = store.create(normalizeComment(payload));
 
-    events.broadcast("comment", { comment, total: store.count() });
+    const broadcastPayload = { comment, total: store.count() };
+    events.broadcast("comment", broadcastPayload);
+    hostSockets.broadcast("comment", broadcastPayload);
     sendJson(res, 201, { comment });
     return true;
   }
@@ -98,6 +109,18 @@ async function handleRequest(req, res) {
 
 const server = http.createServer(handleRequest);
 
+server.on("upgrade", (req, socket) => {
+  const url = new URL(req.url || "/", `http://${req.headers.host || "local"}`);
+
+  if (url.pathname === "/ws/host") {
+    hostSockets.accept(req, socket);
+    return;
+  }
+
+  socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
+  socket.destroy();
+});
+
 server.listen(config.port, config.host, () => {
   console.log(`Komet listening on http://${config.host}:${config.port}`);
   console.log(`database: ${config.paths.dbPath}`);
@@ -105,6 +128,7 @@ server.listen(config.port, config.host, () => {
 
 process.on("SIGTERM", () => {
   events.close();
+  hostSockets.close();
   server.close(() => {
     store.close();
     process.exit(0);

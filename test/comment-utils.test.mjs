@@ -2,6 +2,17 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { COLORS, normalizeComment } from "../src/comment-utils.mjs";
 
+test("uses the public six-color palette", () => {
+  assert.deepEqual(COLORS, [
+    "#111111",
+    "#ffffff",
+    "#2563eb",
+    "#dc2626",
+    "#16a34a",
+    "#7c3aed",
+  ]);
+});
+
 test("normalizes comment text, name, and color", () => {
   const comment = normalizeComment({
     text: "  hello   world  ",

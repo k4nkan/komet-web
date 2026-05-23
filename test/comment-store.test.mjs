@@ -22,7 +22,7 @@ test("creates and reads comments from sqlite", () => {
       {
         text: "world",
         name: "tester",
-        color: "#ffef6a",
+        color: "#2563eb",
       },
       "2026-05-19T00:00:01.000Z",
     );

@@ -24,5 +24,8 @@ if [ -z "$URL" ]; then
   exit 1
 fi
 
-printf 'Host:   %s/host\n' "$URL"
-printf 'Client: %s/client\n' "$URL"
+WS_URL="$(printf '%s' "$URL" | sed 's/^http/ws/')/ws/host"
+
+printf 'Host:      %s/host\n' "$URL"
+printf 'Comment:   %s/client\n' "$URL"
+printf 'WebSocket: %s\n' "$WS_URL"

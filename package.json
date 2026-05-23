@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node src/server.mjs",
-    "check": "node --check src/config.mjs && node --check src/comment-store.mjs && node --check src/http-utils.mjs && node --check src/network.mjs && node --check src/reset-comments.mjs && node --check src/static-files.mjs && node --check src/sse-hub.mjs && node --check src/server.mjs && node --check public/shared/api.js && node --check public/host/host.js && node --check public/client/client.js",
+    "check": "node --check src/config.mjs && node --check src/comment-store.mjs && node --check src/comment-utils.mjs && node --check src/http-utils.mjs && node --check src/network.mjs && node --check src/reset-comments.mjs && node --check src/static-files.mjs && node --check src/sse-hub.mjs && node --check src/websocket-hub.mjs && node --check src/server.mjs && node --check public/shared/api.js && node --check public/host/host.js && node --check public/client/client.js && node --check extension/content-script.js && node --check extension/popup.js",
     "test": "node --test"
   },
   "engines": {

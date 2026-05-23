@@ -1,13 +1,13 @@
-const MAX_TEXT_LENGTH = 90;
+const MAX_TEXT_LENGTH = 80;
 const MAX_NAME_LENGTH = 24;
 
 export const COLORS = [
+  "#111111",
   "#ffffff",
-  "#ffef6a",
-  "#7dd3fc",
-  "#fda4af",
-  "#86efac",
-  "#c4b5fd",
+  "#2563eb",
+  "#dc2626",
+  "#16a34a",
+  "#7c3aed",
 ];
 
 function cleanString(value, maxLength) {
