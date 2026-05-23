@@ -1,0 +1,154 @@
+.host-body {
+  overflow: hidden;
+}
+
+.host-stage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 28%), #050609;
+  overflow: hidden;
+}
+
+.comment-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.flying-comment {
+  position: absolute;
+  top: var(--top);
+  left: 0;
+  max-width: none;
+  color: var(--comment-color, #fff);
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-shadow:
+    3px 3px 0 #000,
+    -2px -2px 0 #000,
+    2px -2px 0 #000,
+    -2px 2px 0 #000,
+    0 0 14px rgba(0, 0, 0, 0.85);
+  transform: translateX(100vw);
+  animation: fly-left var(--duration) linear forwards;
+  will-change: transform;
+}
+
+@keyframes fly-left {
+  from {
+    transform: translateX(100vw);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.host-panel {
+  position: fixed;
+  z-index: 10;
+  top: 18px;
+  left: 18px;
+  width: min(420px, calc(100vw - 36px));
+  padding: 16px;
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: 0 18px 60px var(--shadow);
+  backdrop-filter: blur(14px);
+}
+
+.host-panel.is-hidden {
+  display: none;
+}
+
+.panel-row,
+.panel-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.panel-row {
+  justify-content: flex-start;
+  margin-bottom: 14px;
+  font-weight: 700;
+}
+
+.panel-field {
+  align-items: flex-start;
+  margin-top: 10px;
+}
+
+.panel-field span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.panel-field strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-align: right;
+  font-size: 14px;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--danger);
+  box-shadow: 0 0 18px var(--danger);
+}
+
+.status-dot.is-online {
+  background: var(--accent);
+  box-shadow: 0 0 18px var(--accent);
+}
+
+.panel-button,
+.panel-toggle {
+  border: 0;
+  cursor: pointer;
+  color: #04110f;
+  background: var(--accent);
+  font-weight: 800;
+}
+
+.panel-button {
+  width: 100%;
+  min-height: 42px;
+  margin-top: 14px;
+  border-radius: 6px;
+}
+
+.panel-toggle {
+  position: fixed;
+  z-index: 11;
+  top: 18px;
+  left: 18px;
+  display: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+}
+
+.panel-toggle.is-visible {
+  display: block;
+}
+
+@media (max-width: 720px) {
+  .flying-comment {
+    font-size: 30px;
+  }
+
+  .host-panel {
+    right: 14px;
+    left: 14px;
+    width: auto;
+  }
+}

@@ -1,0 +1,19 @@
+name: komet
+
+services:
+  komet:
+    build: .
+    expose:
+      - "3000"
+    environment:
+      HOST: 0.0.0.0
+      PORT: "3000"
+      DATA_DIR: /app/data
+    restart: unless-stopped
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate --url http://komet:3000
+    depends_on:
+      - komet
+    restart: unless-stopped
