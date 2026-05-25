@@ -11,7 +11,7 @@ sh start.sh
 ```
 
 表示されたURLを開きます。
-起動するたびに、前回までのコメントは全削除されます。
+コメントはメモリ上だけで保持されるため、起動し直すと消えます。
 
 ```text
 Host:      https://xxxx.trycloudflare.com/host
@@ -39,12 +39,6 @@ URLを空にして保存するとWebSocket接続を閉じ、ページ上のoverl
 docker compose down
 ```
 
-## コメントを全部消す
-
-```bash
-CONFIRM=reset sh reset-comments.sh
-```
-
 ## 主なファイル
 
 - `public/host/`: コメントを流すホスト画面
@@ -52,11 +46,11 @@ CONFIRM=reset sh reset-comments.sh
 - `public/shared/`: ブラウザ側の共通処理
 - `extension/`: Chrome拡張
 - `src/server.mjs`: HTTPサーバーの入口
-- `src/comment-store.mjs`: SQLiteへの保存と読み込み
+- `src/comment-store.mjs`: 起動中コメントのメモリ保持
 - `src/websocket-hub.mjs`: Chrome拡張向けWebSocket配信
 - `compose.yaml`: アプリとCloudflare TunnelのDocker設定
 
-SQLite DBは起動時に実行環境内へ自動作成されます。`data/` は生成物なのでGitHubには含めません。
+DBは使っていません。コメントはサーバープロセスのメモリ上にだけ残ります。
 
 ## マニュアル
 

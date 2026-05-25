@@ -14,7 +14,7 @@ import { serveStatic } from "./static-files.mjs";
 import { createSseHub } from "./sse-hub.mjs";
 import { createWebSocketHub } from "./websocket-hub.mjs";
 
-const store = createCommentStore(config.paths.dbPath);
+const store = createCommentStore();
 const events = createSseHub();
 const hostSockets = createWebSocketHub();
 
@@ -44,7 +44,6 @@ async function handleApiRequest(req, res, url) {
       screenUrl: `${origin}/screen`,
       commentUrl: `${origin}/comment`,
       colors: COLORS,
-      dbPath: config.paths.dbPath,
       localAddresses: localAddresses(config.port),
     });
     return true;
@@ -123,7 +122,6 @@ server.on("upgrade", (req, socket) => {
 
 server.listen(config.port, config.host, () => {
   console.log(`Komet listening on http://${config.host}:${config.port}`);
-  console.log(`database: ${config.paths.dbPath}`);
 });
 
 process.on("SIGTERM", () => {

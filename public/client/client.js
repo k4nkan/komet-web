@@ -1,19 +1,12 @@
 import { getInfo, postComment } from "/shared/api.js";
 
 const form = document.querySelector("#commentForm");
-const nameInput = document.querySelector("#nameInput");
 const textInput = document.querySelector("#textInput");
 const colorRow = document.querySelector("#colorRow");
-const formStatus = document.querySelector("#formStatus");
 const submitButton = document.querySelector(".submit-button");
 
 let selectedColor = "#111111";
 let isSubmitting = false;
-
-function setStatus(text, isError = false) {
-  formStatus.textContent = text;
-  formStatus.classList.toggle("is-error", isError);
-}
 
 function renderColors(colors) {
   colorRow.innerHTML = "";
@@ -39,8 +32,6 @@ async function loadInfo() {
   renderColors(info.colors);
 }
 
-nameInput.value = localStorage.getItem("komet:name") || "";
-
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -50,10 +41,9 @@ form.addEventListener("submit", async (event) => {
 
   isSubmitting = true;
   submitButton.disabled = true;
-  setStatus("sending");
+  submitButton.textContent = "送信中";
 
   const payload = {
-    name: nameInput.value,
     text: textInput.value,
     color: selectedColor,
   };
@@ -61,17 +51,19 @@ form.addEventListener("submit", async (event) => {
   try {
     await postComment(payload);
 
-    localStorage.setItem("komet:name", nameInput.value);
     textInput.value = "";
     textInput.focus();
-    setStatus("sent");
-    setTimeout(() => setStatus("ready"), 900);
+    submitButton.textContent = "送信済み";
+    setTimeout(() => {
+      submitButton.textContent = "送信";
+    }, 600);
   } catch (error) {
-    setStatus(error.message, true);
+    console.error(error);
+    submitButton.textContent = "再送信";
   } finally {
     isSubmitting = false;
     submitButton.disabled = false;
   }
 });
 
-loadInfo().catch(() => setStatus("offline", true));
+loadInfo().catch((error) => console.error(error));

@@ -2,8 +2,6 @@
 set -eu
 
 docker compose up -d --build --force-recreate
-docker compose exec -T komet node src/reset-comments.mjs
-echo "Comments reset."
 
 URL=""
 COUNT=0

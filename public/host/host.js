@@ -147,7 +147,7 @@ function showComment(comment, options = {}) {
   el.style.setProperty("--top", `${options.top}px`);
   el.style.setProperty("--duration", `${durationMs}ms`);
   el.style.setProperty("--comment-color", comment.color || "#fff");
-  el.title = `${comment.name || "anonymous"} / ${comment.createdAt || ""}`;
+  el.title = comment.createdAt || "";
 
   activeComments += 1;
   layer.appendChild(el);
@@ -200,12 +200,12 @@ function enqueueComment(comment, options = {}) {
 
 function updateCount() {
   commentCount = Math.max(commentCount + 1, seenIds.size);
-  dbStatus.textContent = `SQLite / ${commentCount}`;
+  dbStatus.textContent = String(commentCount);
 }
 
 function setCount(count) {
   commentCount = Math.max(commentCount, count || 0, seenIds.size);
-  dbStatus.textContent = `SQLite / ${commentCount}`;
+  dbStatus.textContent = String(commentCount);
 }
 
 function rememberComment(comment) {
@@ -253,7 +253,7 @@ function ingestComments(comments, options = {}) {
 async function renderInfo() {
   const info = await getInfo();
   clientUrl.textContent = info.clientUrl;
-  dbStatus.textContent = "SQLite / 0";
+  dbStatus.textContent = "0";
 }
 
 function connectEvents() {

@@ -3,9 +3,6 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
-const dataDir = path.resolve(
-  process.env.DATA_DIR || path.join(rootDir, "data"),
-);
 const port = Number(process.env.PORT || 3000);
 
 export const config = {
@@ -15,7 +12,5 @@ export const config = {
   paths: {
     rootDir,
     publicDir: path.join(rootDir, "public"),
-    dataDir,
-    dbPath: path.join(dataDir, "comments.sqlite"),
   },
 };

@@ -5,7 +5,7 @@
 }
 
 .client-shell {
-  width: min(760px, 100%);
+  width: min(520px, 100%);
   margin: 0 auto;
   padding: 22px 14px 32px;
 }
@@ -13,65 +13,16 @@
 .post-card {
   border: 1px solid var(--panel-border);
   border-radius: 8px;
+  padding: 20px;
   background: rgba(17, 20, 27, 0.92);
   box-shadow: 0 18px 60px var(--shadow);
 }
 
-.post-card {
-  padding: 20px;
-}
-
-.post-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.post-heading {
-  margin-bottom: 18px;
-}
-
-.post-heading h1 {
-  margin: 0;
-  letter-spacing: 0;
-}
-
-.post-heading h1 {
-  font-size: 28px;
-}
-
-.field-label {
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.status-pill {
-  display: inline-flex;
-  align-items: center;
-  min-height: 28px;
-  padding: 0 10px;
-  border-radius: 999px;
-  color: #05201c;
-  background: var(--accent);
-  font-size: 13px;
-  font-weight: 800;
-}
-
-.status-pill.is-error {
-  color: #26070d;
-  background: var(--danger);
-}
-
-.field-label {
-  display: block;
-  margin: 14px 0 8px;
-  font-weight: 700;
-}
-
-input,
 textarea {
   width: 100%;
+  min-height: 120px;
+  resize: vertical;
+  padding: 12px;
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 6px;
   outline: none;
@@ -79,18 +30,6 @@ textarea {
   color: var(--text);
 }
 
-input {
-  min-height: 46px;
-  padding: 0 12px;
-}
-
-textarea {
-  min-height: 120px;
-  resize: vertical;
-  padding: 12px;
-}
-
-input:focus,
 textarea:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.2);

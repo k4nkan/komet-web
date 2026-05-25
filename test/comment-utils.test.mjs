@@ -13,16 +13,14 @@ test("uses the public six-color palette", () => {
   ]);
 });
 
-test("normalizes comment text, name, and color", () => {
+test("normalizes comment text and color", () => {
   const comment = normalizeComment({
     text: "  hello   world  ",
-    name: "  user  ",
     color: COLORS[2],
   });
 
   assert.deepEqual(comment, {
     text: "hello world",
-    name: "user",
     color: COLORS[2],
   });
 });
@@ -30,7 +28,6 @@ test("normalizes comment text, name, and color", () => {
 test("uses defaults for optional fields", () => {
   const comment = normalizeComment({ text: "hi", color: "#000000" });
 
-  assert.equal(comment.name, "anonymous");
   assert.equal(comment.color, COLORS[0]);
 });
 
