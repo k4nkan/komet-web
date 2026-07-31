@@ -7,7 +7,7 @@ all:
 	docker compose up -d --build --force-recreate; \
 	URL=""; \
 	COUNT=0; \
-	while [ "$$COUNT" -lt 30 ]; do \
+	while [ "$$COUNT" -lt 60 ]; do \
 		URL="$$(docker compose logs tunnel 2>&1 \
 			| sed -n 's/.*\(https:\/\/[a-zA-Z0-9.-]*\.trycloudflare\.com\).*/\1/p' \
 			| grep -v '^https://api\.trycloudflare\.com$$' \
@@ -20,7 +20,8 @@ all:
 	done; \
 	if [ -z "$$URL" ]; then \
 		echo "Could not create Cloudflare Tunnel URL." >&2; \
-		echo "Check: docker compose logs tunnel" >&2; \
+		echo "Tunnel logs:" >&2; \
+		docker compose logs --tail 30 tunnel >&2; \
 		exit 1; \
 	fi; \
 	WS_URL="$$(printf '%s' "$$URL" | sed 's/^http/ws/')/ws/host"; \
