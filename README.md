@@ -2,16 +2,20 @@
 
 スマホや別PCのブラウザからコメントを投稿し、ホストPCの画面に流す小さなWebアプリです。
 
-通信ルートはCloudflare Tunnelだけにしています。スマホとPCが同じWi-Fiである必要はありません。
+Cloudflare Tunnelを使うので、スマホとPCが同じWi-Fiである必要はありません。
 
-## すぐ使う
+## 必要なもの
+
+- Docker Desktop
+- インターネット接続
+
+## 起動
 
 ```bash
-sh start.sh
+make
 ```
 
 表示されたURLを開きます。
-コメントはメモリ上だけで保持されるため、起動し直すと消えます。
 
 ```text
 Host:      https://xxxx.trycloudflare.com/host
@@ -23,40 +27,21 @@ WebSocket: wss://xxxx.trycloudflare.com/ws/host
 - `Comment`: スマホや別PCで開く
 - `WebSocket`: Chrome拡張のpopupに入力する
 
-## Chrome拡張で現在のページに流す
-
-1. Chromeで `chrome://extensions` を開く
-2. 「デベロッパーモード」をONにする
-3. 「パッケージ化されていない拡張機能を読み込む」から `extension/` を選ぶ
-4. 拡張機能のpopupを開き、`WebSocket` のURLを入力して保存する
-5. `Comment` のURLからコメントを送る
-
-URLを空にして保存するとWebSocket接続を閉じ、ページ上のoverlayも削除します。
-
-## 止める
+## 停止
 
 ```bash
-docker compose down
+make stop
 ```
 
-## 主なファイル
+## 補足
 
-- `public/host/`: コメントを流すホスト画面
-- `public/client/`: コメント投稿画面
-- `public/shared/`: ブラウザ側の共通処理
-- `extension/`: Chrome拡張
-- `src/server.mjs`: HTTPサーバーの入口
-- `src/comment-store.mjs`: 起動中コメントのメモリ保持
-- `src/websocket-hub.mjs`: Chrome拡張向けWebSocket配信
-- `compose.yaml`: アプリとCloudflare TunnelのDocker設定
+- URLは起動ごとに変わることがあります。
+- コメントはメモリ上だけに保存されます。停止すると消えます。
+- URLが出ないときは `docker compose logs tunnel` を確認します。
 
-DBは使っていません。コメントはサーバープロセスのメモリ上にだけ残ります。
+詳しい補足は [docs/MANUAL.md](docs/MANUAL.md) を見てください。
 
-## マニュアル
-
-詳しい説明は [docs/MANUAL.md](docs/MANUAL.md) を見てください。
-
-## 開発確認
+## 開発用
 
 ```bash
 npm test
